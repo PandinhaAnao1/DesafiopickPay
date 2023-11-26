@@ -3,59 +3,70 @@ import modeloLogista from "../models/lojistasModels.js";
 //Dica tornar a chave do email unique
 class logistas {
 
-    static async buscarPorEmail(email) {
+    static async buscarPorEmail(req, res) {
         try {
-            const logistaPeloEmai = await modeloLogista.find({ Email: email });
-            return logistaPeloEmai;
+            const logistaPeloEmai = await modeloLogista.find({ Email: req.Email });
+            res.status(200).send(logistaPeloEmai);
         } catch (erro) {
-            return erro;
+            res.status(400).send(erro);
         };
 
     };
-    static async buscarPorCpf(cpf) {
+    static async buscarPorCpf(req, res) {
         try {
-            const logistaPeloCpf = await modeloLogista.find({ CPF: cpf });
-            return logistaPeloCpf;
+            const logistaPeloCpf = await modeloLogista.find({ CPF: req.C });
+            res.status(200).send(logistaPeloCpf);
         } catch (erro) {
-            return erro;
+            res.status(400).send(erro);
         };
     };
 
-    static async cadastrarNovoLogista(logista) {
-        let tamanhoDoArry = logista.length;
+    static async cadastrarNovoLogista(req, res) {
 
-        if (tamanhoDoArry == 5) {
-            try {
-                let existe = await this.buscarPorEmail(logista[2])
-                if (!existe.leght) {
-                    await modeloLogista.insertMany({
-                        nome:logista[0],
-                        CPF:logista[1],
-                        Email:logista[2],
-                        Sehna:logista[3],
-                        Saldo:logista[4] 
+        try {
+            const resutaldo =
+                await modeloLogista.find({
+                    $or: [{ Email: req.Email }, { CPF: req.CPF }]
+                })
+            if (resutaldo) {
+                res.status(200).send('Usuario ja existe!')
+                return;
+            }
+
+            const novoUser = await modeloLogista.insertMany(
+                {
+                    nome: req.nome,
+                    CPF: req.CPF,
+                    Email: req.Email,
+                    Sehna: req.Sehna,
+                    Saldo: req.Saldo
                 });
-                return {
-                    Mesage:"Usuario cadastrado com sucesso!",
-                    Usuario:logista
+            res.status(200).json(
+                {
+                    mensage:'Usuario cadastrado!',
+                    usuario:novoUser
                 }
-                } else {
-                    return {
-                        Mensage: "Esse usuario ja existe!",
-                        Usuario: existe
-                    };
-                }
-            } catch {
-                return erro;
+            );
 
-            }
-        }else{
-            return {
-                Mensage:"Dados inconsistentes estou esperando um arry com 5 elementos.",
-                TamnhoRecebido:tamanhoDoArry
-            }
-        }
-    }
-};
+        } catch (erro) {
+            res.status(400).send('Erro ao tentar cadastra o usuario!')
+        };
+
+    };
+
+    static async deletarLogistaCpfOuEmail(req, res) {
+        try {
+            const logistaDeletado = 
+            await modeloLogista.deleteOne({
+                $or: [{ Email: req.Email }, { CPF: req.CPF }]
+            });
+            res.status(200).send('Logista deletado!')
+        } catch (erro) {
+            res.status(400).send(erro);
+        };
+    };
+
+}
+
 
 export default logistas;
