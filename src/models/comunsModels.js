@@ -3,10 +3,16 @@ import mongoose from "mongoose";
 const SchemaComun = new mongoose.Schema({
     nome:String,
     CPF:String,
-    Email:{
+    Email:
+        {
         type: String,
-        unique: true},
-    Sehna:String,
+        unique: true
+        },
+    Sehna:
+        {
+        type: String,
+        unique: true   
+        },
     Saldo:Number
 });
 

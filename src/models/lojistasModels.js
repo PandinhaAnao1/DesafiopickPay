@@ -3,8 +3,16 @@ import mongoose from "mongoose";
 const SchemaLogista = new mongoose.Schema({
     nome:String,
     CPF:String,
-    Email:String,
-    Sehna:String,
+    Email:  
+        {
+        type: String,
+        unique: true
+        },
+    Sehna:
+        {
+        type: String,
+        unique: true
+        },
     Saldo:Number 
 });
 
