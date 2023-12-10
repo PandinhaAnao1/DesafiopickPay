@@ -55,6 +55,7 @@ class logistas {
 
     };
 
+    //Deleta um usuario pelo cpf ou email
     static async deletarLogistaCpfOuEmail(req, res) {
         try {
             const reqEmail = req.body.Email, reqCPF = req.body.CPF;
@@ -73,6 +74,25 @@ class logistas {
                 Erro:erro
             });
         };
+    };
+
+
+    //Atualiza um usuario pelo id
+    static async atualizaLogistaPorId(req, res){
+        try{   
+            const id = req.body._id; 
+            const logistaEncontrado = await modeloLogista.findByIdAndUpdate(id,req.body);
+            res.status(200).json({
+                Mensage:'Livro atualizado',
+                Atuazlizado:logistaEncontrado
+            });
+        }catch (erro){
+            res.status(500).json({
+            mensage:'falha na requisição!',
+            Erro:erro
+                
+            });
+        }
     };
 
 }
