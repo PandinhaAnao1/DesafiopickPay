@@ -40,27 +40,25 @@ class ComunUsuario {
         try{
             const identificacao = req.body._id;
             const userConsultado = 
-            await modeloComun.findById(identificacao)
-            // .exec((erro,document)=>{
-            //     if(erro){
-            //         res.status(400).json(
-            //             {
-            //                 Mensage:'Ocorreu um erro porfavor verifique corretamente!',
-            //                 Erro:erro
-            //             }
-            //         )
-            //     }else{
-            //         res.status(202).json(
-            //             {
-            //                 Mensage:'Usuario encontrado com suceso!',
-            //                 Usuario:document
-            //             }
-            //         );
-            //     };
-            // });
-
-            //APRENDER A USAR AS CALLBACKS EO .EXC
-            res.status(200).json(userConsultado);
+            await modeloComun.findById(identificacao).then(
+                (document)=>{
+                    res.status(200).json(
+                        {
+                            Mensage:'Usuario encontrado com sucesso!',
+                            Usuario:document
+                        }
+                    );
+                }
+            ).catch(
+                (erro)=>{
+                    res.status(400).json(
+                        {
+                            Mensage:'Ocorreu um erro ao buscar o usario!',
+                            Erro:erro
+                        }
+                    );
+                }
+            );
 
         } catch(erro) {
 
