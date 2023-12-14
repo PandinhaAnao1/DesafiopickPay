@@ -110,6 +110,10 @@ class logistas {
         };
     };
 
+    
+    static async receberTransferenciaPorCpf(){
+
+    }
 }
 
 

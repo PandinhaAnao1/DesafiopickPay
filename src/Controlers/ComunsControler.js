@@ -1,7 +1,5 @@
 
-//deletar um usuario comun 
 //fazer transferencias para logistas
-//Atualizar usuarios comun
 import modeloComun from '../models/comunsModels.js'
 class ComunUsuario {
 
@@ -76,14 +74,24 @@ class ComunUsuario {
         
         try{
             const identificacao = req.body._id;
-            usuarioDeletado = await modeloComun.findByIdAndDelete(identificacao);
-            res.status(202).json(
-                {
-                    Mensage:'O usuario foi deletado com sucesso!',
-                    Usuario:usuarioDeletado
-                }
-            );
-
+            usuarioDeletado = await modeloComun.findByIdAndDelete(identificacao).exec().then(
+                (document)=>{
+                    res.status(202).json(
+                        {
+                            Mensage:'O usuario foi deletado com sucesso!',
+                            Usuario:document
+                        }
+                    );
+        }).catch(
+            (erro)=>{
+                res.status(400).json(
+                    {
+                        Mensage:'Ocorreu um erro ao buscar o usuario!',
+                        Erro:erro
+                    }
+                );
+            }
+        );
         } catch(erro) { 
             res.status(500).json(
                 {
@@ -92,9 +100,42 @@ class ComunUsuario {
                 }
             );
         };
+    };
 
 
 
+    //Atualizar usuarios comun
+    static async atualizarUsuarioComunPorId(req,res){
+        try{
+            const identificacao = req.body._id;
+            const atualizar = req.body;
+            await modeloComun.findByIdAndUpdate(identificacao,{...atualizar}).exec().then(
+                (document)=>{
+                    res.status(200).json(
+                        {
+                            Mensage:'O usuario foi atualizado com sucesso!',
+                            User:document
+                        }
+                    );
+                }
+            ).catch(
+                (erro)=>{
+                    res.status(400).json(
+                        {
+                            Mensage:'Usuario atualizado com sucesso!',
+                            Erro:erro
+                        }
+                    );
+                }
+            );
+        } catch(erro){
+            res.status(500).json(
+                {
+                    Message:'Ocorreu um erro ao atualizar um usario!',
+                    Erro:erro
+                }
+            );
+        };
     };
 
 };
