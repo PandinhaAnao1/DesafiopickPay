@@ -1,6 +1,7 @@
 
 //fazer transferencias para logistas
 import modeloComun from '../models/comunsModels.js'
+import logistas from './logistasControler.js';
 class ComunUsuario {
 
     //Criar um usuario commun
@@ -67,7 +68,6 @@ class ComunUsuario {
             );
         }
     };
-
     //deletar um usuario comun 
     static async deltearUsuarioComunPorId(req,res){
         
@@ -100,8 +100,6 @@ class ComunUsuario {
             );
         };
     };
-
-
 
     //Atualizar usuarios comun
     static async atualizarUsuarioComunPorId(req,res){
@@ -165,6 +163,34 @@ class ComunUsuario {
             res.status(500).json(
                 {
                     Mensage:'Ocorreu um erro no servidor!',
+                    Erro:erro
+                }
+            );
+        };
+    };
+
+    static async realizarTransferenciaIdParaCpf(req,res){
+        try{
+            const indentificacao = req.body._id;
+            const cpf = req.body.CPF, valor = req.body.valor
+            let pagador = await modeloComun.findById(indentificacao);
+            let fundoDisponivel = pagador.Saldo;
+            if(fundoDisponivel>=valor){
+                const json = await logistas.receberTransferenciaPorCpf(cpf,valor);
+                pagador.Saldo -= valor;
+                pagador.save();
+                res.status(200).json(json);
+            }else{
+                res.status(400).json(
+                    {
+                        Mensage:'Impossivel realizar transferecias com valores maiores que o saldo atual!'
+                    }
+                )
+            }
+        }catch(erro){
+            res.status(500).json(
+                {
+                    Mensage:'Ocorreu um erro ao tentar realizar transferencia!', 
                     Erro:erro
                 }
             );

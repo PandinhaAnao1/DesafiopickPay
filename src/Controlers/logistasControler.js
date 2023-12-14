@@ -108,9 +108,32 @@ class logistas {
     };
 
     
-    static async receberTransferenciaPorCpf(){
+    static async receberTransferenciaPorCpf(cpf,transf){
+        try{
+            const user = await modeloLogista.findOne({CPF:cpf})
+            if(transf>0){
+                let transferencia = user.Saldo;
+                transferencia += transf;
+                user.Saldo = transferencia;
+                const identificacao = user._id;
+                await modeloLogista.findByIdAndUpdate(identificacao,{...user});
+                return{
+                    Mensage:'A transação foi realizada com sucesso!'
+                };
+            }else{
+                return {
+                    Mensage:'nao foi possivel realizar a transação sem valor!'
+                }
 
-    }
+            }
+
+        }catch(erro){
+            return {
+                Mensage:'Erro ao relizar transferencia para outro usuario!',
+                Erro:erro
+            }
+        }
+    };
 }
 
 

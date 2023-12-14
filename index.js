@@ -9,8 +9,8 @@ app.use(express.json());
 
 const conctador = await conectNaDataBase()
 
-app.put('/', async (req, res) => {
-    await ComunUsuario.atualizaUsuarioComunPorID(req,res);
+app.post('/', async (req, res) => {
+    await ComunUsuario.realizarTransferenciaIdParaCpf(req,res);
 });
 
 
