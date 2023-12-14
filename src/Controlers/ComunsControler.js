@@ -59,7 +59,6 @@ class ComunUsuario {
             );
 
         } catch(erro) {
-
             res.status(500).json(
                 {
                     Mensage:'Ocorreu um erro no server!',
@@ -74,24 +73,24 @@ class ComunUsuario {
         
         try{
             const identificacao = req.body._id;
-            usuarioDeletado = await modeloComun.findByIdAndDelete(identificacao).exec().then(
+            await modeloComun.findByIdAndDelete(identificacao).exec().then(
                 (document)=>{
-                    res.status(202).json(
+                    res.status(201).json(
                         {
-                            Mensage:'O usuario foi deletado com sucesso!',
-                            Usuario:document
+                            Mensage:'Documento deletado com sucesso!',
+                            User:document
                         }
                     );
-        }).catch(
-            (erro)=>{
-                res.status(400).json(
-                    {
-                        Mensage:'Ocorreu um erro ao buscar o usuario!',
-                        Erro:erro
-                    }
-                );
-            }
-        );
+                }
+            ).catch(
+                (erro)=>{
+                    res.status(400).json(
+                        {
+                            Mensage:'Ocorreu um erro ao deletar o usuario!',
+                            Erro:erro
+                        }
+                    );
+                });
         } catch(erro) { 
             res.status(500).json(
                 {
@@ -132,6 +131,40 @@ class ComunUsuario {
             res.status(500).json(
                 {
                     Message:'Ocorreu um erro ao atualizar um usario!',
+                    Erro:erro
+                }
+            );
+        };
+    };
+
+    //Atualizar usuarios comun
+    static async atualizaUsuarioComunPorID(req,res){
+        const identificacao = req.body._id;
+        const dados = req.body;
+        try{
+            await modeloComun.findByIdAndUpdate(identificacao,...dados).exec().then(
+                (document)=>{
+                    res.status(200).json(
+                        {
+                            Mensage:'O usario foi atualizado!',
+                            User:document
+                        }  
+                    );
+                }
+            ).catch(
+                (erro)=>{
+                    res.status(400).json(
+                        {
+                            Mensage:'Ocorreu um erro ao atualizar um usuario!',
+                            Erro:erro
+                        }
+                    )
+                }
+            );
+        }catch(erro){
+            res.status(500).json(
+                {
+                    Mensage:'Ocorreu um erro no servidor!',
                     Erro:erro
                 }
             );

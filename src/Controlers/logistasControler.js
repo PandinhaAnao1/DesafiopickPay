@@ -1,6 +1,5 @@
 import modeloLogista from "../models/lojistasModels.js";
 
-//Dica tornar a chave do email unique
 class logistas {
     
     //Busca um usuario por CPF ou Email
@@ -28,7 +27,6 @@ class logistas {
             );
         };
     };
-
 
     //Cadastra um novo logista
     static async cadastrarNovoLogista(req, res) {
@@ -87,7 +85,6 @@ class logistas {
             );
         };
     };
-
 
     //Atualiza um usuario pelo id
     static async atualizaLogistaPorId(req, res){

@@ -9,8 +9,8 @@ app.use(express.json());
 
 const conctador = await conectNaDataBase()
 
-app.delete('/', async (req, res) => {
-    await ComunUsuario.deltearUsuarioComunPorId(req,res);
+app.put('/', async (req, res) => {
+    await ComunUsuario.atualizaUsuarioComunPorID(req,res);
 });
 
 
@@ -19,3 +19,4 @@ app.listen(porta,()=>{
 });
 
 
+  
