@@ -1,6 +1,6 @@
 import modeloLogista from "../models/lojistasModels.js";
 
-class logistas {
+class Logistas {
     
     //Busca um usuario por CPF ou Email
     static async buscarPorCpfouEmail(req, res) {
@@ -93,7 +93,7 @@ class logistas {
             const logistaEncontrado = await modeloLogista.findByIdAndUpdate(id,req.body);
             res.status(200).json(
                 {
-                    Mensage:'Livro atualizado',
+                    Mensage:'Logista atualizado com sucesso!',
                     Atuazlizado:logistaEncontrado
                 }
             );
@@ -107,7 +107,7 @@ class logistas {
         };
     };
 
-    
+    //Metodo da classe que permite atualizar o saldo do logista e realizar a transferencia
     static async receberTransferenciaPorCpf(cpf,transf){
         try{
             const user = await modeloLogista.findOne({CPF:cpf})
@@ -138,4 +138,4 @@ class logistas {
 
 
 
-export default logistas;
+export default Logistas;

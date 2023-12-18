@@ -3,6 +3,41 @@
 import modeloComun from '../models/comunsModels.js'
 import logistas from './logistasControler.js';
 class ComunUsuario {
+    
+    //Buscar um usuario commun
+    static async buscarPorComunPorId(req,res){
+        try{
+            const identificacao = req.body._id;
+            const userConsultado = 
+            await modeloComun.findById(identificacao).exec().then(
+                (document)=>{
+                    res.status(200).json(
+                        {
+                            Mensage:'Usuario encontrado com sucesso!',
+                            Usuario:document
+                        }
+                    );
+                }
+            ).catch(
+                (erro)=>{
+                    res.status(400).json(
+                        {
+                            Mensage:'Ocorreu um erro ao buscar o usario!',
+                            Erro:erro
+                        }
+                    );
+                }
+            );
+    
+        } catch(erro) {
+            res.status(500).json(
+                {
+                    Mensage:'Ocorreu um erro no server!',
+                    Errro:erro
+                }
+            );
+        }
+    };
 
     //Criar um usuario commun
     static async casdastrarComun(req, res) {
@@ -34,40 +69,6 @@ class ComunUsuario {
         };
     };
 
-    //Buscar um usuario commun
-    static async buscarPorComunPorId(req,res){
-        try{
-            const identificacao = req.body._id;
-            const userConsultado = 
-            await modeloComun.findById(identificacao).then(
-                (document)=>{
-                    res.status(200).json(
-                        {
-                            Mensage:'Usuario encontrado com sucesso!',
-                            Usuario:document
-                        }
-                    );
-                }
-            ).catch(
-                (erro)=>{
-                    res.status(400).json(
-                        {
-                            Mensage:'Ocorreu um erro ao buscar o usario!',
-                            Erro:erro
-                        }
-                    );
-                }
-            );
-
-        } catch(erro) {
-            res.status(500).json(
-                {
-                    Mensage:'Ocorreu um erro no server!',
-                    Errro:erro
-                }
-            );
-        }
-    };
     //deletar um usuario comun 
     static async deltearUsuarioComunPorId(req,res){
         
@@ -103,9 +104,9 @@ class ComunUsuario {
 
     //Atualizar usuarios comun
     static async atualizarUsuarioComunPorId(req,res){
+        const identificacao = req.body._id;
+        const atualizar = req.body;
         try{
-            const identificacao = req.body._id;
-            const atualizar = req.body;
             await modeloComun.findByIdAndUpdate(identificacao,{...atualizar}).exec().then(
                 (document)=>{
                     res.status(200).json(
@@ -129,40 +130,6 @@ class ComunUsuario {
             res.status(500).json(
                 {
                     Message:'Ocorreu um erro ao atualizar um usario!',
-                    Erro:erro
-                }
-            );
-        };
-    };
-
-    //Atualizar usuarios comun
-    static async atualizaUsuarioComunPorID(req,res){
-        const identificacao = req.body._id;
-        const dados = req.body;
-        try{
-            await modeloComun.findByIdAndUpdate(identificacao,...dados).exec().then(
-                (document)=>{
-                    res.status(200).json(
-                        {
-                            Mensage:'O usario foi atualizado!',
-                            User:document
-                        }  
-                    );
-                }
-            ).catch(
-                (erro)=>{
-                    res.status(400).json(
-                        {
-                            Mensage:'Ocorreu um erro ao atualizar um usuario!',
-                            Erro:erro
-                        }
-                    )
-                }
-            );
-        }catch(erro){
-            res.status(500).json(
-                {
-                    Mensage:'Ocorreu um erro no servidor!',
                     Erro:erro
                 }
             );

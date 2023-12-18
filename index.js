@@ -1,18 +1,13 @@
 import express from "express";
 import conectNaDataBase from "./src/config/dbConnect.js";
-import logistas from "./src/Controlers/logistasControler.js";
-import modeloLogista from "./src/models/lojistasModels.js";
-import ComunUsuario from './src/Controlers/ComunsControler.js'
+import comunRouter from './src/routers/comunRouter.js';
 const porta = 3000;
 const app = express();
 app.use(express.json());
 
-const conctador = await conectNaDataBase()
+const conctador = await conectNaDataBase();
 
-app.post('/', async (req, res) => {
-    await ComunUsuario.realizarTransferenciaIdParaCpf(req,res);
-});
-
+app.use('/comun',comunRouter)
 
 app.listen(porta,()=>{
     console.log(`Rodando na porta ${porta}`)
