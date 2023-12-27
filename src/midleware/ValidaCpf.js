@@ -2,15 +2,32 @@
 const validaCadastroDePessoaFisica = 
     (req,res,next)=>{
         const CPF = req.body.CPF;
-        const tamanho = CPF.length;
-        if(tamanho==11){
-            let numeros = Array();
-            for(let c = 0; c<tamanho; c++){
-                numeros.push(Number(CPF.charAt(c)))
-            };        
+        if(CPF!=undefined){
+            const tamanho = CPF.length;
+            if(tamanho===11){
+                //confirmar se é um numero
+                let numeros = CPF.split('');
+                for(let c = 0; c<tamanho; c++){
+                    if(!(isNaN(numeros[c]))){
+                        numeros[c] = Number(numeros[c])
+                    }else{
+                        res.status(400).json({
+                            Mensage:'Você inseriu caracteres incosistentes é esperado apenas numeros como parametros!',
+                            CaractereIncosistente:numeros[c]
+                        }).end()
+                        return;     
+                    };
+                   
+                
+                };
+            }else{
+                res.status(400).json({
+                    Mensage:`Voce inseriu um cpf com ${tamanho} de caracteres o esperado são 11!`
+                }).end();
+            }
         }else{
             res.status(400).json({
-                Mensage:"Você inseriu o cpf errado!"
+                Mensage:"Você inseriu um cpf invalido sem caracteres!"
             }).end();
         };
 
