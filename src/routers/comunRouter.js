@@ -8,12 +8,8 @@ comunRouter.post('/buscar',(req,res)=>{
 });
 
 comunRouter.post('/cadastrar',validaCadastroDePessoaFisica,(req,res)=>{
-    res.send('Funcionou');
-})
-
-// (req,res)=>{
-//     ComunUsuario.casdastrarComun(req,res);
-// });
+    ComunUsuario.casdastrarComun(req,res);
+});
 
 comunRouter.delete('/deletar',(req,res)=>{
     ComunUsuario.deltearUsuarioComunPorId(req,res);
