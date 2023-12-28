@@ -2,7 +2,7 @@
 const validaCadastroDePessoaFisica = 
     (req,res,next)=>{
         const CPF = req.body.CPF;
-        if(CPF!=undefined){
+        if(CPF){
             const tamanho = CPF.length;
             
             //Verificando se o cpf tem todos os campos preechidos
