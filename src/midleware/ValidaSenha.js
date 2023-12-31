@@ -1,12 +1,12 @@
 const validaSenha = 
     (req,res,next)=>{
-        const senha = req.body.Sehna;
+        const senha = req.body.Senha;
         if(senha){
             if(senha.length>=8){                
                 const minusculos = 'abcdefghijklmnopqrstuvwxyz';
                 const maiuscula = minusculos.toUpperCase();
                 const numeros = '123456789';
-                const especiais = maiuscula.concat(maiuscula).concat(numeros);
+                const naoSaoEpeciais = maiuscula.concat(minusculos).concat(numeros);
                 function varificaDados(metaDado,stringSenha){
                     let fazer = true;
                     let temOcaracter = false;
@@ -27,7 +27,22 @@ const validaSenha =
                     };
                     return temOcaracter;
                 };
-                let aprovado = (varificaDados(minusculos,senha)&&varificaDados(maiuscula,senha)&&varificaDados(numeros,senha));
+                let aprovadoComuns = 
+                    (varificaDados(minusculos,senha)
+                    &&varificaDados(maiuscula,senha)
+                    &&varificaDados(numeros,senha));
+                let arrySenha = senha.split('')
+                let resultado = 
+                    arrySenha.every(elemento => naoSaoEpeciais.includes(elemento));
+                    
+                    if(aprovadoComuns&&(!resultado)){
+                        next()
+                    }else{
+                        res.status(400).json({
+                            Mensage:'A sua senha esta incosistente porfavor verifique os caracteres!'
+                        });
+                    }
+            
             }else{
                 res.status(400).json({
                     Mensage:'A senha que voce inseriu é invalida pois nao possui o tamanho adequado',
