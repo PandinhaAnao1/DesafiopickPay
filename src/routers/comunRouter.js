@@ -8,14 +8,10 @@ comunRouter.post('/buscar',(req,res)=>{
     ComunUsuario.buscarPorComunPorId(req,res);
 });
 
-comunRouter.post('/cadastrar',validaSenha,(req,res)=>{
-    res.send('funcionou!')
+comunRouter.post('/cadastrar',validaSenha,validaCadastroDePessoaFisica,
+    (req,res)=>{
+        ComunUsuario.casdastrarComun(req,res);
 });
-
-
-// (req,res)=>{
-//     ComunUsuario.casdastrarComun(req,res);
-// });
 
 comunRouter.delete('/deletar',(req,res)=>{
     ComunUsuario.deltearUsuarioComunPorId(req,res);
@@ -25,8 +21,7 @@ comunRouter.put('/atualizar',(req,res)=>{
     ComunUsuario.atualizarUsuarioComunPorId(req,res);
 });
 
-comunRouter.post('/transferir',validaCadastroDePessoaFisica,
-    (req,res)=>{
+comunRouter.post('/transferir',(req,res)=>{
         ComunUsuario.realizarTransferenciaIdParaCpf(req,res);
 });
 

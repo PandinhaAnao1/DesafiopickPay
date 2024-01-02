@@ -59,11 +59,3 @@ const validaSenha =
     };
 
 export default validaSenha;
-
-//Posuir
-//Maiuscula
-//Minuscula
-//Numeros
-//Espesciais
-
-//sperar a senha
